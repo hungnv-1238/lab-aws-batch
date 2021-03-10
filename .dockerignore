@@ -1,0 +1,7 @@
+README.md
+.gitignore
+.git
+.rubocop*
+tmp/cache
+docker
+.dockerignore

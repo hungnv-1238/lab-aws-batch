@@ -1,0 +1,38 @@
+FROM ruby:2.7.2-alpine3.12 AS build-env
+
+WORKDIR /src
+
+ARG RAILS_BUILD_ENV=development
+ENV BUNDLE_APP_CONFIG="/src/.bundle"
+ENV BUNDLE_RUBY_DIRNAME=2.7.0
+ENV RAILS_ENV=$RAILS_BUILD_ENV
+
+RUN apk update \
+    && apk upgrade \
+    && apk add build-base mariadb-dev git sqlite
+
+RUN apk add sqlite-dev
+
+COPY Gemfile* ./
+RUN mkdir -p vendor/bundle && bundle install --with development --path=vendor/bundle
+RUN rm -rf vendor/bundle/ruby/$BUNDLE_RUBY_DIRNAME/cache/*.gem \
+    && find vendor/bundle/ruby/$BUNDLE_RUBY_DIRNAME/gems/ -name "*.c" -delete \
+    && find vendor/bundle/ruby/$BUNDLE_RUBY_DIRNAME/gems/ -name "*.o" -delete
+
+COPY . .
+
+RUN rm -rf node_modules tmp/cache spec
+
+FROM ruby:2.7.2-alpine3.12
+
+ENV BUNDLE_APP_CONFIG="/app/.bundle"
+
+WORKDIR /app
+
+RUN apk update \
+    && apk upgrade \
+    && apk add mysql-client tzdata bash mariadb-connector-c-dev sqlite
+
+RUN apk add sqlite-libs
+
+COPY --from=build-env /src/ ./
