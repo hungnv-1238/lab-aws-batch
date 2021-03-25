@@ -1,0 +1,2 @@
+class NasaImageRequestLog < ApplicationRecord
+end

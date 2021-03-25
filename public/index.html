@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Image of the day</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/4.0/examples/starter-template/">
+
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="index.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+    <a class="navbar-brand" href="#">NASA Image Of The Day</a>
+
+    <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="#" id="seeImage">See image</span></a>
+          </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#" id="gallery">Gallery</span></a>
+          </li>
+        </ul>
+</nav>
+
+<main role="main" class="container">
+
+    <div class="starter-template" id="seeImagePane">
+        <h1>Image of the day</h1>
+        <div id="imageContainer">
+
+        </div>
+        <button type="button" class="btn btn-success" id="loadImageBtn">Load</button>
+    </div>
+
+    <div class="starter-template d-none" id="galleryPane">
+        <div id="galleryContainer" class="row">
+
+        </div>
+    </div>
+</main>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.6.0/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+      $('#loadImageBtn').on('click', function () {
+        $('#imageContainer').empty();
+        $.get('http://localhost:3000/image').done(function (result) {
+          $('#imageContainer').append(
+            `<img src="${result.data.url}" style="margin: 10px; height: 600px; width: auto">
+            <p>${result.data.explanation}</p>`
+          )
+        });
+      });
+
+      ['seeImage', 'gallery'].forEach(function (btnId, idx) {
+        document.getElementById(btnId).addEventListener('click', function () {
+            $(`#${btnId}Pane`).removeClass('d-none');
+            if (btnId === 'seeImage') {
+                $('#imageContainer').empty();
+                $('#gallery' + 'Pane').addClass('d-none');
+            } else {
+              $('#galleryContainer').empty();
+              let images = ``;
+              $.get('http://localhost:3000/gallery').done(function (result) {
+                for (let data of result) {
+                  images += `<div class="col"><img src="${data.url}" style="width: 200px; height: auto; margin: 3px;"></div>`
+                }
+                $('#galleryContainer').append(images);
+              });
+              $('#seeImage' + 'Pane').addClass('d-none');
+            }
+        });
+      });
+    });
+</script>
+
+</body>
+</html>

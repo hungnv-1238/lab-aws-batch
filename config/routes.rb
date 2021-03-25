@@ -1,3 +1,6 @@
 Rails.application.routes.draw do
-  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
+  root to: "nasa_images#show"
+  get "/image", to: "nasa_images#show"
+  get "/gallery", to: "nasa_images#index"
+  get "/ping", to: "nasa_images#ping"
 end
