@@ -5,3 +5,6 @@ README.md
 tmp/cache
 docker
 .dockerignore
+/config/settings.local.yml
+/config/settings.yml
+/config/settings/develoment.yml
