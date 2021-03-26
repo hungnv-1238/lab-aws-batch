@@ -1,0 +1,20 @@
+version: '3.7'
+services:
+  image-api:
+    image: hunguyen/niotd-api:latest
+    networks:
+      niotd-network:
+  front-web:
+    image: nginx:1.19.8
+  mysql:
+    image: mysql:5.7
+    volumes:
+      - niotd-data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: 123
+
+networks:
+  niotd-network:
+
+volumes:
+  niotd-data:
