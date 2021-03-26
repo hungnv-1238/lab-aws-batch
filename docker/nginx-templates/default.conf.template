@@ -1,0 +1,14 @@
+server {
+	listen 80 default_server;
+	listen [::]:80 default_server;
+
+	server_name _;
+    absolute_redirect off;
+    port_in_redirect off;
+
+	location / {
+	    alias /app/;
+        index index.html;
+        try_files $uri $uri/ /index.html;
+	}
+}

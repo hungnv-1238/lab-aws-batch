@@ -2,16 +2,32 @@ version: '3.7'
 services:
   image-api:
     image: hunguyen/niotd-api:latest
+    environment:
+      - RAILS_ENV=development
     networks:
       niotd-network:
+    volumes:
+      - ../../config/settings.yml:/app/config/settings.yml
+      - ../../config/settings/development.yml:/app/config/settings/development.yml
+      - ../../config/database.yml:/app/config/database.yml
+      - ../../entry-point.sh:/app/entry-point.sh
+    entrypoint: ["/app/entrypoint.sh"]
   front-web:
     image: nginx:1.19.8
+    volumes:
+      - ../nginx-templates:/etc/nginx/templates
+      - ../../public:/app
+    networks:
+      niotd-network:
   mysql:
-    image: mysql:5.7
+    image: mysql:5.7.29
+    command: --default-authentication-plugin=mysql_native_password
     volumes:
       - niotd-data:/var/lib/mysql
     environment:
-      MYSQL_ROOT_PASSWORD: 123
+      - MYSQL_ROOT_PASSWORD=123
+    networks:
+      niotd-network:
 
 networks:
   niotd-network:
