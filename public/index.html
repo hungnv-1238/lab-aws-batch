@@ -58,7 +58,11 @@
           $('#imageContainer').append(
             `<img src="${result.data.url}" style="margin: 10px; height: 600px; width: auto">
             <p>${result.data.explanation}</p>`
-          )
+          );
+        }).fail(function () {
+          $('#imageContainer').append(
+            `<p style="color: red">API error!!!</p>`
+          );
         });
       });
 
@@ -76,6 +80,10 @@
                   images += `<div class="col"><img src="${data.url}" style="width: 200px; height: auto; margin: 3px;"></div>`
                 }
                 $('#galleryContainer').append(images);
+              }).fail(function () {
+                $('#galleryContainer').append(
+                  `<p style="color: red">API error!!!</p>`
+                );
               });
               $('#seeImage' + 'Pane').addClass('d-none');
             }
@@ -83,6 +91,5 @@
       });
     });
 </script>
-
 </body>
 </html>

@@ -1,4 +1,6 @@
 class NasaImagesController < ApplicationController
+  before_action :test_failed_action
+
   def show
     uri =  URI(Settings.nasa_image_endpoint +
       "?api_key=" + Settings.nasa_image_api_key +
@@ -23,5 +25,14 @@ class NasaImagesController < ApplicationController
 
   def ping
     render json: {status: :pong}
+  end
+
+  private
+  def test_failed_action
+    $fail_counter ||= 0
+
+    $fail_counter += 1
+    Rails.logger.info ">>>>> The counter now is #{$fail_counter}"
+    render status: 500 if $fail_counter > 5
   end
 end
