@@ -40,3 +40,5 @@ yarn-debug.log*
 config/settings.local.yml
 config/settings/*.yml
 config/environments/*.local.yml
+
+/docker/compose/docker-compose.yml

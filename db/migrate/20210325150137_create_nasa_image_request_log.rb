@@ -1,4 +1,4 @@
-class NasaImageRequestLog < ActiveRecord::Migration[6.1]
+class CreateNasaImageRequestLog < ActiveRecord::Migration[6.1]
   def change
     create_table :nasa_image_request_logs do |t|
       t.text :url

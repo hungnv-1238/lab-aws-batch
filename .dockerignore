@@ -8,3 +8,4 @@ docker
 /config/settings.local.yml
 /config/settings.yml
 /config/settings/develoment.yml
+/config/database.yml

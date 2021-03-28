@@ -1,0 +1,15 @@
+version: '3.7'
+services:
+  image-api:
+    volumes:
+      - ../../config/settings.yml:/app/config/settings.yml
+      - ../../config/settings/development.yml:/app/config/settings/development.yml
+      - ../../config/database.yml:/app/config/database.yml
+      - ../../entrypoint.sh:/app/entrypoint.sh
+  front-web:
+    volumes:
+      - ../nginx-templates:/etc/nginx/templates
+      - ../../public:/app
+  mysql:
+    environment:
+      - MYSQL_ROOT_PASSWORD=123
