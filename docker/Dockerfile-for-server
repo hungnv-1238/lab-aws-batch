@@ -29,6 +29,8 @@ WORKDIR /app
 
 RUN apk update \
     && apk upgrade \
-    && apk add mysql-client tzdata bash mariadb-connector-c-dev
+    && apk add mysql-client tzdata bash mariadb-connector-c-dev curl
 
 COPY --from=build-env /src/ ./
+
+ENTRYPOINT

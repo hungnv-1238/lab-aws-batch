@@ -1,5 +1,5 @@
 class NasaImagesController < ApplicationController
-  before_action :test_failed_action
+  # before_action :test_failed_action
 
   def show
     uri =  URI(Settings.nasa_image_endpoint +
