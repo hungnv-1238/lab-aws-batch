@@ -1,0 +1,35 @@
+networks:
+  niotd-network: {}
+services:
+  front-web:
+    image: nginx:1.19.8
+    networks:
+      niotd-network: {}
+    volumes:
+    - /home/nguyen.viet.hung/projects/lab-aws-batch/public:/app:rw
+    - /home/nguyen.viet.hung/projects/lab-aws-batch/docker/nginx-templates:/etc/nginx/templates:rw
+  image-api:
+    entrypoint:
+    - /app/entrypoint.sh
+    environment:
+      RAILS_ENV: development
+    image: hunguyen/niotd-api:latest
+    networks:
+      niotd-network: {}
+    volumes:
+    - /home/nguyen.viet.hung/projects/lab-aws-batch/config/database.yml:/app/config/database.yml:rw
+    - /home/nguyen.viet.hung/projects/lab-aws-batch/config/settings.yml:/app/config/settings.yml:rw
+    - /home/nguyen.viet.hung/projects/lab-aws-batch/config/settings/development.yml:/app/config/settings/development.yml:rw
+  mysql:
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: '123'
+    image: mysql:5.7.29
+    networks:
+      niotd-network: {}
+    volumes:
+    - niotd-data:/var/lib/mysql:rw
+version: '3.7'
+volumes:
+  niotd-data: {}
+

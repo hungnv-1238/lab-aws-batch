@@ -5,7 +5,6 @@ services:
       - ../../config/settings.yml:/app/config/settings.yml
       - ../../config/settings/development.yml:/app/config/settings/development.yml
       - ../../config/database.yml:/app/config/database.yml
-      - ../../entrypoint.sh:/app/entrypoint.sh
   front-web:
     volumes:
       - ../nginx-templates:/etc/nginx/templates

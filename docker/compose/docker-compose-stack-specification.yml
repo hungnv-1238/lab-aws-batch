@@ -1,0 +1,58 @@
+version: '3.7'
+services:
+  image-api:
+    configs:
+      - source: image-api-setting
+        target: /app/config/settings.yml
+    secrets:
+      - source: image-api-setting
+        target: /app/config/settings/development.yml
+      - source: image-api-db-config
+        target: /app/config/database.yml
+    deploy:
+      replicas: 6
+      update_config:
+        parallelism: 3
+        monitor: 60s
+        order: start-first
+        failure_action: rollback
+      rollback_config:
+        parallelism: 6
+        order: start-first
+        failure_action: continue
+  front-web:
+    ports:
+      - mode: host
+        published: 80
+        target: 80
+    deploy:
+      mode: global
+    configs:
+      - source: front-web-template
+        target: /etc/nginx/templates/default.conf.template
+      - source: front-web-index
+        target: /app/index.html
+      - source: front-web-css
+        target: /app/index.css
+  mysql:
+    deploy:
+      placement:
+        constraints:
+          - "node.labels.role==database"
+    environment:
+      - MYSQL_ROOT_PASSWORD=123
+configs:
+  image-api-setting:
+    external: true
+  front-web-template:
+    external: true
+  front-web-index:
+    external: true
+  front-web-css:
+    external: true
+
+secrets:
+  image-api-setting:
+    external: true
+  image-api-db-config:
+    external: true
